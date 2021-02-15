@@ -1,16 +1,10 @@
 with open("input.txt", 'r') as f:
-  entries = [{pair.split(':')[0] : pair.split(':')[1] for pair in pport.replace("\n", " ").split(" ") if pair.strip() != ""} for pport in f.read().split("\n\n")]
-
-def has_all_fields(entry):
-    try: 
-        byr, iyr, eyr, hgt, hcl, ecl, pid = entry["byr"], entry["iyr"], entry["eyr"], entry["hgt"], entry["hcl"], entry["ecl"], entry["pid"]
-        return True
-    except: return False
+    entries = [dict(pair.split(':') for pair in pport.replace("\n", " ").split(" ") if pair.strip() != "") for pport in f.read().split("\n\n")]
   
 def validate(entry):
     try: byr, iyr, eyr, hgt, hcl, ecl, pid = entry["byr"], entry["iyr"], entry["eyr"], entry["hgt"], entry["hcl"], entry["ecl"], entry["pid"]
-    except: return False
-    return (
+    except: return False, False
+    return True, (
         len(byr) == 4 and int(byr) >= 1920 and int(byr) <= 2002
         and len(iyr) == 4 and int(iyr) >= 2010 and int(iyr) <= 2020  
         and len(eyr) == 4 and int(eyr) >= 2020 and int(eyr) <= 2030
@@ -21,5 +15,4 @@ def validate(entry):
         and len(pid) == 9 and pid.isnumeric() 
     )
 
-pt1, pt2 = sum(has_all_fields(e) for e in entries), sum(validate(e) for e in entries)
-print("Pt1: {}\nPt2: {}".format(pt1, pt2))
+print(f"Pt1: {sum(validate(e)[0] for e in entries)}\nPt2: {sum(validate(e)[1] for e in entries)}")

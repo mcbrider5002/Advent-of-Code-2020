@@ -1,17 +1,14 @@
 from collections import deque
 
 with open("input.txt", "r") as f:
-    numbers = [int(l.strip()) for l in f if l.strip() != ""]
+    numbers = [int(ln.strip()) for ln in f if ln.strip() != ""]
 
 def pt1(prelength):
     sums = [set() for _ in numbers]
-    for i, n in enumerate(numbers):
-        for j in range(i, prelength): sums[i].add(n + numbers[j])
-        
-    for i in range(prelength, len(numbers)):
-        if(not any(numbers[i] in sums[j] for j in range(i - prelength, i))): return numbers[i]
-        for j in range(i - prelength + 1, i): sums[j].add(numbers[i] + numbers[j])
-        
+    for i in range(0, len(numbers)):
+        if(i >= prelength and not any(numbers[i] in sums[j] for j in range(i - prelength, i))): 
+            return numbers[i]
+        for j in range(min(0, i - prelength + 1), i): sums[j].add(numbers[i] + numbers[j])
     return "Nothing found!"
     
 def pt2(target):
@@ -24,4 +21,4 @@ def pt2(target):
     return "Nothing found!"
 
 ans1 = pt1(25)
-print("Pt1: {}\nPt2: {}".format(ans1, pt2(ans1)))
+print(f"Pt1: {ans1}\nPt2: {pt2(ans1)}")

@@ -1,5 +1,5 @@
 from functools import reduce
-def set_reduce(answers, fn): return reduce(fn, (set(ln) for ln in answers.split("\n") if ln.strip()))
-def sum_answers(fn):
-    with open("input.txt", 'r') as f: return sum(len(set_reduce(group, fn)) for group in f.read().split("\n\n"))
-print("pt 1: {}\npt 2: {}".format(sum_answers(lambda x, y: x | y), sum_answers(lambda x, y: x & y)))
+with open("input.txt", 'r') as f:
+    groups = [[set(ln) for ln in group.split("\n") if ln.strip()] for group in f.read().split("\n\n")]
+def sum_answers(fn): return sum(len(reduce(fn, group)) for group in groups)
+print(f"Pt1: {sum_answers(lambda x, y: x | y)}\nPt2: {sum_answers(lambda x, y: x & y)}")
