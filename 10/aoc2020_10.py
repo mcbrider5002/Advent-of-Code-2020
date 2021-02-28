@@ -8,7 +8,7 @@ def pt1():
     return counts[1] * (counts[3] + 1)
     
 def pt2():
-    maxm, ns = numbers[-1], set(numbers)
+    ns = set(numbers)
     prevs = 1, 0, 0
     for i in numbers[1:]:
         prev_counts = ((i-3) in ns) + ((i-2) in ns) + ((i-1) in ns)
@@ -16,4 +16,4 @@ def pt2():
         prevs = new, prevs[0], prevs[1]
     return prevs[0]
 
-print("Pt1: {}\nPt2: {}".format(pt1(), pt2()))
+print(f"Pt1: {pt1()}\nPt2: {pt2()}")
